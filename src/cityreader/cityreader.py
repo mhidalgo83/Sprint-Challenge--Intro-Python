@@ -7,7 +7,7 @@ class City:
     self.lon = lon
 
   def __str__(self):
-    return f"{self.name}, {self.lat}, {self.lon}"
+    return f"{self.name}: {self.lat}, {self.lon}"
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -81,9 +81,19 @@ for c in cities:
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
-  within = []
+  if lat1 > lat2:  
+    with open("cities.csv") as csv_file:
+      csv_reader = csv.DictReader(csv_file)
+        # Print cities where lat is between lat1 and lat2 AND cities where lon is between lon1 and lon2
+      cities = [(City(row["city"], float(row["lat"]), float(row["lng"]))) for row in csv_reader if float(row["lat"]) >= lat2 and float(row["lat"]) <= lat1 and float(row["lng"]) >= lon2 and float(row["lng"]) <= lon1]
+  else:
+    with open("cities.csv") as csv_file:
+      csv_reader = csv.DictReader(csv_file)
+        # Print cities where lat is between lat1 and lat2 AND cities where lon is between lon1 and lon2
+      cities = [(City(row["city"], float(row["lat"]), float(row["lng"]))) for row in csv_reader if float(row["lat"]) >= lat1 and float(row["lat"]) <= lat2 and float(row["lng"]) >= lon1 and float(row["lng"]) <= lon2 ]
+  within = cities
   
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
-
+  
   return within
